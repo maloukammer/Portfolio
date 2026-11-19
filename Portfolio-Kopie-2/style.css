@@ -1,0 +1,244 @@
+:root {
+    --page-bg: #fff;
+    --text-color: #000;
+    --hover-color: #6e6e6e;
+    --shade-color: rgba(255,255,255,.7);
+}
+
+body.theme-dark {
+    --page-bg: #000;
+    --text-color: #fff;
+    --hover-color: #919191;
+    --shade-color: rgba(0,0,0,.7);
+}
+
+html.theme-dark {
+    background: #000;
+}
+
+html, body { 
+    margin: 0; 
+    background: var(--page-bg);
+    color: var(--text-color);
+    transition: background-color .2s ease, color .2s ease;
+}
+
+.topbar { 
+    position: fixed; 
+    z-index: 10; 
+    inset: 0 0 auto; 
+    height: 64px; 
+    padding: 0 32px; 
+    display: flex; 
+    align-items: center; 
+    justify-content: space-between; 
+    background: var(--page-bg);
+    color: var(--text-color);
+    font: 14px Arial, sans-serif; 
+}
+
+.topbar {
+    isolation: isolate;
+}
+
+.bottom-bar {
+    position: fixed;
+    z-index: 20;
+    inset: auto 0 0;
+    height: 64px;
+    padding: 0 32px;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    background: var(--page-bg);
+    color: var(--text-color);
+    font: 14px Arial, sans-serif;
+}
+
+body.theme-dark .bottom-bar {
+    background: #000;
+    color: #fff;
+}
+
+.bottom-bar-right {
+    justify-self: end;
+}
+
+.theme-switch {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.theme-switch button {
+    padding: 0;
+    border: 0;
+    background: none;
+    color: inherit;
+    font: inherit;
+    cursor: pointer;
+    transition: color .18s ease;
+}
+
+.theme-switch button:hover {
+    color: var(--hover-color);
+}
+
+.theme-switch button[aria-pressed="true"] {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+.topbar button { 
+    position: relative;
+    z-index: 2;
+    padding: 0; 
+    border: 0; 
+    background: none; 
+    color: inherit; 
+    font: inherit; 
+    cursor: pointer; 
+    transition: color .18s ease;
+}
+
+.topbar button:hover {
+    color: var(--hover-color);
+}
+
+.topbar-link {
+    position: relative;
+    z-index: 2;
+    color: inherit;
+    font: inherit;
+    text-decoration: none;
+    transition: color .18s ease;
+}
+
+.topbar-link:hover {
+    color: var(--hover-color);
+}
+
+main { 
+    position: relative; 
+    width: 100%; 
+    margin: 64px 0 0; 
+    padding: 24px 0; 
+}
+
+body.project-open main { 
+    padding-top: 0; 
+}
+
+canvas { 
+    display: block; 
+}
+
+.row-shades { 
+    position: absolute; 
+    z-index: 2; 
+    top: 24px; 
+    left: 0; 
+    width: 100%; 
+    pointer-events: none; 
+}
+
+body.project-open .row-shades { 
+    display: none; 
+}
+
+.project-description {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 20px;
+    padding: 0 20px;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height .45s ease;
+}
+
+.project-description p {
+    grid-column: 2;
+    margin: 0;
+    padding: 20px 0;
+    color: var(--text-color);
+    font: 14px/1.5 Arial, sans-serif;
+    text-align: center;
+    opacity: 0;
+    transform: translateY(-24px);
+    transition: opacity .3s ease, transform .45s ease;
+}
+
+body.project-description-open .project-description {
+    max-height: 3000px;
+}
+
+body.project-description-open .project-description p {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.row-shade { 
+    position: absolute; 
+    left: 0; 
+    width: 100%; 
+    background: var(--shade-color);
+    opacity: 0; 
+    transition: opacity .18s ease; 
+}
+
+.row-shade.is-dimmed { 
+    opacity: 1; 
+}
+
+.project-title { 
+    position: absolute;
+    z-index: 1;
+    left: 50%; 
+    top: 50%;
+    transform: translate(-50%, -50%);
+    color: var(--text-color);
+    font: 14px Arial, sans-serif; 
+    opacity: 0;
+    white-space: nowrap;
+    transition: opacity .18s ease, color .18s ease;
+    pointer-events: none; 
+}
+
+.project-title.is-visible { 
+    opacity: 1; 
+}
+
+.project-title.is-selected { 
+    opacity: 1; 
+    pointer-events: auto;
+    cursor: pointer;
+}
+
+.project-title.is-selected:hover {
+    color: var(--hover-color);
+}
+
+.project-grid {
+    display: none;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 20px;
+    padding: 20px;
+    background: var(--page-bg);
+}
+
+body.project-grid-visible .project-grid {
+    display: grid;
+}
+
+.project-grid-field {
+    background: #a2a2a2;
+}
+
+.project-grid-field-tall {
+    aspect-ratio: .76;
+}
+
+.project-grid-field-wide {
+    grid-column: 1 / -1;
+    aspect-ratio: 3.08;
+}

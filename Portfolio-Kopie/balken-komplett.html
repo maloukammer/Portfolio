@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Malou Kammer</title>
+  <link rel="stylesheet" href="style.css">
+
+</head>
+<body>
+  <header class="topbar">
+    <button id="projects-link" type="button">Projekte</button>
+    <div class="project-title" aria-live="polite"></div>
+    <a class="topbar-link" href="about.html">About Me</a>
+  </header>
+
+  <main>
+    <canvas id="c"></canvas>
+    <div class="row-shades" aria-hidden="true"></div>
+  </main>
+
+  <section class="project-description" aria-label="Projektbeschreibung">
+    <p>Zwanzig Corner Shops in London und ihre ganz eigenen Geschichten bilden die Grundlage dieses Buchprojekts. Während eines Studienaufenthalts in London haben alle angehenden Grafiker*innen einen Laden erkundet, fotografiert und dokumentiert. Aus den unterschiedlichen Beobachtungen und gesammelten Materialien entstand mein Buch. Die Gestaltung führt durch die verschiedenen Shops und stellt sie auf einzelnen Seiten gegenüber. Fotografien, persönliche Eindrücke und Texte geben Einblicke in ihren Alltag und zeigen, was die kleinen Geschäfte verbindet und voneinander unterscheidet.</p>
+  </section>
+
+  <section class="project-grid" aria-label="Projektinhalt">
+    <div class="project-grid-field project-grid-field-tall"></div>
+    <div class="project-grid-field project-grid-field-tall"></div>
+    <div class="project-grid-field project-grid-field-tall"></div>
+    <div class="project-grid-field project-grid-field-wide"></div>
+    <div class="project-grid-field project-grid-field-tall"></div>
+    <div class="project-grid-field project-grid-field-tall"></div>
+    <div class="project-grid-field project-grid-field-tall"></div>
+  </section>
+
+  <!-- paper.js erzeugt die weichen Übergänge (Meta Balls) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/paper.js/0.12.17/paper-core.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
