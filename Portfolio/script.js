@@ -19,15 +19,15 @@ const PROJEKTNAMEN = [
 /* ---------- Setup ---------- */
 const canvas = document.getElementById("c");
 paper.setup(canvas);
-const { Point, Path, CompoundPath, Group, Raster, Rectangle, Size } = paper;
+const { Point, Path, CompoundPath, Group, Raster, Size } = paper;
 const R = (a, b) => a + Math.random() * (b - a);
 const shuffle = a => a.map(x => [Math.random(), x]).sort((p, q) => p[0] - q[0]).map(p => p[1]);
 let W, H, G, VG, rows = [], img, selectedProject = -1;
 const shadeLayer = document.querySelector(".row-shades");
 const titleLabel = document.querySelector(".project-title");
 const projectGrid = document.querySelector(".project-grid");
+const descriptionToggle = document.querySelector(".project-info-toggle");
 const projectDescription = document.querySelector(".project-description");
-const descriptionHoverTargets = [document.querySelector(".topbar"), canvas, titleLabel, projectDescription];
 const rowShades = Array.from({ length: 8 }, () => {
   const shade = document.createElement("div");
   shade.className = "row-shade";
@@ -35,32 +35,25 @@ const rowShades = Array.from({ length: 8 }, () => {
   return shade;
 });
 let activeRow = -1;
-let descriptionHoverArmed = false;
 
-function updateDescriptionHover() {
-  const isHovering = descriptionHoverTargets.some(element => element.matches(":hover"));
-  document.body.classList.toggle("project-description-open", selectedProject >= 0 && descriptionHoverArmed && isHovering);
+function setDescriptionOpen(isOpen) {
+  document.body.classList.toggle("project-description-open", isOpen);
+  descriptionToggle.setAttribute("aria-expanded", String(isOpen));
+  descriptionToggle.setAttribute("aria-label", isOpen ? "Projektbeschreibung schließen" : "Projektbeschreibung anzeigen");
+  projectDescription.setAttribute("aria-hidden", String(!isOpen));
 }
 
-descriptionHoverTargets.forEach(element => {
-  element.addEventListener("pointerenter", () => {
-    if (selectedProject >= 0) descriptionHoverArmed = true;
-    updateDescriptionHover();
-  });
-  element.addEventListener("pointerleave", event => {
-    const next = event.relatedTarget;
-    if (!next || !descriptionHoverTargets.some(target => target === next || target.contains(next))) {
-      updateDescriptionHover();
-    }
-  });
+descriptionToggle.addEventListener("click", () => {
+  setDescriptionOpen(descriptionToggle.getAttribute("aria-expanded") !== "true");
 });
 
 function setActiveRow(index) {
   if (selectedProject >= 0) index = -1;
   activeRow = index;
   rowShades.forEach((shade, i) => shade.classList.toggle("is-dimmed", index >= 0 && i !== index));
-  titleLabel.textContent = index >= 0 ? PROJEKTNAMEN[index] : titleLabel.classList.contains("is-leaving") ? titleLabel.textContent : selectedProject >= 0 ? PROJEKTNAMEN[selectedProject] : "";
-  titleLabel.classList.toggle("is-visible", index >= 0);
+  titleLabel.textContent = index >= 0 ? PROJEKTNAMEN[index] : selectedProject >= 0 ? PROJEKTNAMEN[selectedProject] : "";
+  titleLabel.classList.toggle("is-visible", index >= 0 && selectedProject < 0);
+  titleLabel.classList.toggle("is-selected", selectedProject >= 0);
 }
 
 canvas.addEventListener("pointermove", event => {
@@ -68,52 +61,38 @@ canvas.addEventListener("pointermove", event => {
   if (!H || !VG) return;
   const y = event.clientY - canvas.getBoundingClientRect().top;
   const index = Math.floor(y / (H + VG));
+  canvas.classList.toggle("is-project-hovered", index >= 0 && index < rows.length && y <= index * (H + VG) + H);
   setActiveRow(index < rows.length ? index : -1);
 });
-canvas.addEventListener("pointerleave", () => setActiveRow(-1));
+canvas.addEventListener("pointerleave", () => {
+  canvas.classList.remove("is-project-hovered");
+  setActiveRow(-1);
+});
 canvas.addEventListener("click", event => {
   if (!H || selectedProject >= 0) return;
   const y = event.clientY - canvas.getBoundingClientRect().top;
   const index = Math.floor(y / (H + VG));
   if (index < rows.length && y <= index * (H + VG) + H) {
     selectedProject = index;
-    descriptionHoverArmed = false;
-    document.body.classList.remove("project-description-open");
+    setDescriptionOpen(false);
+    document.body.classList.toggle("project-grid-jahresausstellung", selectedProject === 1);
     document.body.classList.add("project-open");
     document.body.classList.remove("project-grid-visible");
     projectGrid.setAttribute("aria-hidden", "true");
-    titleLabel.classList.remove("is-visible");
-    titleLabel.classList.remove("is-leaving");
-    titleLabel.classList.remove("is-selected");
-    void titleLabel.offsetWidth;
-    titleLabel.classList.add("is-selected");
     setActiveRow(-1);
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 });
 document.querySelector("#projects-link").addEventListener("click", () => {
-  const wasProjectOpen = selectedProject >= 0;
-  if (wasProjectOpen) {
-    titleLabel.textContent = PROJEKTNAMEN[selectedProject];
-    titleLabel.classList.remove("is-selected", "is-leaving");
-    void titleLabel.offsetWidth;
-    titleLabel.classList.add("is-leaving");
-  }
   selectedProject = -1;
-  descriptionHoverArmed = false;
-  document.body.classList.remove("project-description-open");
+  setDescriptionOpen(false);
+  document.body.classList.remove("project-grid-jahresausstellung");
   document.body.classList.remove("project-grid-visible");
   projectGrid.setAttribute("aria-hidden", "true");
   document.body.classList.remove("project-open");
   if (W && H) paper.view.viewSize = new Size(W, 8 * H + 7 * VG);
   setActiveRow(-1);
   window.scrollTo({ top: 0, behavior: "smooth" });
-});
-titleLabel.addEventListener("animationend", event => {
-  if (event.animationName === "title-leave-header") {
-    titleLabel.classList.remove("is-leaving");
-    titleLabel.textContent = "";
-  }
 });
 titleLabel.addEventListener("click", () => {
   if (selectedProject >= 0) window.scrollTo({ top: 0, behavior: "smooth" });
@@ -141,6 +120,31 @@ function neck(c1, c2, r, k) {
   return p;
 }
 
+function roundedShape(left, top, width, height, topLeft, topRight, bottomRight, bottomLeft) {
+  const maxRadius = Math.min(width / 2, height / 2);
+  const [tl, tr, br, bl] = [topLeft, topRight, bottomRight, bottomLeft]
+    .map(radius => Math.max(0, Math.min(maxRadius, radius)));
+  const k = .5522847498;
+  const segment = (x, y, handleIn = [0, 0], handleOut = [0, 0]) =>
+    new paper.Segment(new Point(x, y), new Point(...handleIn), new Point(...handleOut));
+  const path = new Path({
+    segments: [
+      segment(left + tl, top, [-k * tl, 0]),
+      segment(left + width - tr, top, [0, 0], [k * tr, 0]),
+      segment(left + width, top + tr, [0, -k * tr]),
+      segment(left + width, top + height - br, [0, 0], [0, k * br]),
+      segment(left + width - br, top + height, [k * br, 0]),
+      segment(left + bl, top + height, [0, 0], [-k * bl, 0]),
+      segment(left, top + height - bl, [0, k * bl]),
+      segment(left, top + tl, [0, 0], [0, -k * tl])
+    ],
+    closed: true,
+    fillColor: "#000"
+  });
+  path.clockwise = true;
+  return path;
+}
+
 /* ---------- Zeilen ----------
    Jede Zeile ist eine Liste von Elementen:
    b = Balken, c = Kreis, s = Leerraum, f = flexibler Rest (füllt die Zeile auf)
@@ -165,7 +169,7 @@ function neueZeile(index) {
   }
 
   // jede Zeile darf unterschiedlich voll werden – die meisten bleiben luftig
-  const row = { items, y, next: R(.2, 1.5), lim: R(.92, .98) * W };
+  const row = { items, y, next: R(.2, 1.5), lim: R(.92, .98) * W, hoverProgress: 0 };
   while (total(row) > row.lim && items.filter(i => i.t === "c").length > 3)
     items.splice(items.findIndex(i => i.t === "c"), 1);
 
@@ -239,38 +243,83 @@ paper.view.onFrame = e => {
       return;
     }
     const it = row.items;
-    row.next -= dt; if (row.next < 0) { aktion(row); row.next = R(...NAECHSTE_AKTION); }
-    it.forEach(i => { if (i.t !== "f") i.cur += (i.tgt - i.cur) * k; });
-    for (let j = it.length - 1; j >= 0; j--) if (it[j].t === "c" && it[j].tgt === 0 && it[j].cur < .5) it.splice(j, 1);
+    const isHovered = selectedProject < 0 && rows.indexOf(row) === activeRow;
+    const hoverTarget = isHovered ? 1 : 0;
+    row.hoverProgress += (hoverTarget - row.hoverProgress) * (1 - Math.exp(-dt * 1.8));
+    if (!isHovered) {
+      row.next -= dt;
+      if (row.next < 0) { aktion(row); row.next = R(...NAECHSTE_AKTION); }
+      it.forEach(i => { if (i.t !== "f") i.cur += (i.tgt - i.cur) * k; });
+      for (let j = it.length - 1; j >= 0; j--) if (it[j].t === "c" && it[j].tgt === 0 && it[j].cur < .5) it.splice(j, 1);
+    }
 
     const flexCount = it.filter(i => i.t === "f").length;
     const rest = Math.max(0, W - it.reduce((s, i) => s + (i.t === "f" ? 0 : i.cur), 0)) / Math.max(1, flexCount);
     const targetY = selectedProject === rows.indexOf(row) ? 0 : row.y;
     row.viewY += (targetY - row.viewY) * k;
-    const y = row.viewY, shapes = []; let x = 0;
+    const y = row.viewY, shapes = [], p = row.hoverProgress;
+    const smoothing = Math.max(0, Math.min(1, (p - .45) / .55));
+    const innerRadius = r * (1 - smoothing);
     row.raster.position = [W / 2, y + H / 2];
+    let x = 0;
     it.forEach(i => {
       const a = i.t === "f" ? rest : i.cur;
       if (i.t === "b") {                                           // Balken "atmet"
-        const m = Math.sin(T * i.sp + i.ph) * H * .45;
+        const m = Math.sin(T * i.sp + i.ph) * H * .45 * (1 - p);
         shapes.push([x - m * .5, Math.max(H, a - G + m)]);
       } else if (i.t === "c") {                                    // Kreis pendelt
-        const off = Math.sin(T * i.sp + i.ph) * H * SCHWINGUNG * Math.min(1, a / (H + G));
+        const off = Math.sin(T * i.sp + i.ph) * H * SCHWINGUNG * Math.min(1, a / (H + G)) * (1 - p);
         shapes.push([x + a - H - G + off, H]);
       }
       x += a;
     });
+    if (p > 0 && shapes.length) {
+      shapes.sort((a, b) => a[0] - b[0]);
+      const original = shapes.map(([left, width]) => [left, left + width]);
+
+      // Schritt 1: Die Formen wachsen in die Lücken und verbinden sich.
+      const closeGaps = Math.min(1, p / .45);
+      shapes.forEach((shape, i) => {
+        const leftGap = i > 0 ? Math.max(0, original[i][0] - original[i - 1][1]) : 0;
+        const rightGap = i < shapes.length - 1 ? Math.max(0, original[i + 1][0] - original[i][1]) : 0;
+        const growLeft = leftGap * .6 * closeGaps;
+        const growRight = rightGap * .6 * closeGaps;
+        shape[0] -= growLeft;
+        shape[1] += growLeft + growRight;
+      });
+
+      // Schritt 2: Danach ziehen die Enden auf fast volle Breite.
+      const extend = Math.max(0, Math.min(1, (p - .45) / .55));
+      if (extend > 0) {
+        const first = shapes[0];
+        const last = shapes[shapes.length - 1];
+        const firstRight = first[0] + first[1];
+        const lastRight = last[0] + last[1];
+        const newLeft = first[0] * (1 - extend) + W * .015 * extend;
+        const newRight = lastRight * (1 - extend) + W * .985 * extend;
+        first[1] = firstRight - newLeft;
+        first[0] = newLeft;
+        last[1] = newRight - last[0];
+      }
+    }
     shapes.sort((p, q) => p[0] + p[1] / 2 - q[0] - q[1] / 2);
 
     // Pillen (Balken/Kreise) + Brücken zwischen benachbarten Elementen
-    const parts = shapes.map(([l, w]) => {
-      const p = new Path.Rectangle({ rectangle: new Rectangle(l, y, w, H), radius: r });
-      p.clockwise = true; return p;
+    const parts = shapes.map(([l, w], index) => {
+      const first = index === 0;
+      const last = index === shapes.length - 1;
+      return roundedShape(
+        l, y, w, H,
+        first ? r : innerRadius,
+        last ? r : innerRadius,
+        last ? r : innerRadius,
+        first ? r : innerRadius
+      );
     });
     for (let j = 0; j + 1 < shapes.length; j++) {
       const a = shapes[j][0] + shapes[j][1] - r, b = shapes[j + 1][0] + r, d = b - a;
       if (d <= 1 || d >= maxD) continue;
-      const kk = .5 * Math.min(1, (maxD - d) / (H * .5));
+      const kk = .5 * Math.min(1, (maxD - d) / (H * .5)) * (1 - smoothing);
       if (kk >= .03) parts.push(neck(new Point(a, y + r), new Point(b, y + r), r, kk));
     }
     row.clip.removeChildren();

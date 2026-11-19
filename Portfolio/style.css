@@ -3,6 +3,14 @@ html, body {
     background: #000; 
 }
 
+html {
+    overflow-x: clip;
+}
+
+:root {
+    --project-circle-size: clamp(22px, 6.25vw, 64px);
+}
+
 .topbar { 
     position: fixed; 
     z-index: 10; 
@@ -17,7 +25,13 @@ html, body {
     font: 14px Arial, sans-serif; 
 }
 
+.topbar {
+    isolation: isolate;
+}
+
 .topbar button { 
+    position: relative;
+    z-index: 2;
     padding: 0; 
     border: 0; 
     background: none; 
@@ -32,6 +46,8 @@ html, body {
 }
 
 .topbar-link {
+    position: relative;
+    z-index: 2;
     color: inherit;
     font: inherit;
     text-decoration: none;
@@ -57,6 +73,14 @@ canvas {
     display: block; 
 }
 
+canvas.is-project-hovered {
+    cursor: pointer;
+}
+
+body.project-open canvas {
+    cursor: default;
+}
+
 .row-shades { 
     position: absolute; 
     z-index: 2; 
@@ -70,60 +94,131 @@ body.project-open .row-shades {
     display: none; 
 }
 
-.project-description {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 20px;
-    padding: 0 20px;
-    max-height: 0;
+.project-info {
+    position: fixed;
+    z-index: 20;
+    right: 24px;
+    bottom: 24px;
+    display: none;
+    align-items: flex-end;
+    gap: 0;
     overflow: hidden;
-    transition: max-height .45s ease;
+    border-radius: calc(var(--project-circle-size) / 2);
+    background: #000;
+}
+
+body.project-open .project-info {
+    display: flex;
+}
+
+.project-description {
+    box-sizing: border-box;
+    width: 0;
+    min-width: 0;
+    max-width: calc(100vw - 96px);
+    max-height: var(--project-circle-size);
+    overflow: hidden;
+    padding: 0;
+    background: transparent;
+    color: #fff;
+    opacity: 0;
+    visibility: hidden;
+    transition: width .4s cubic-bezier(.2,.8,.2,1), max-height .4s cubic-bezier(.2,.8,.2,1), padding .4s ease, opacity .2s ease, visibility 0s linear .4s;
 }
 
 .project-description p {
-    grid-column: 2;
     margin: 0;
-    padding: 20px 0;
-    color: #fff;
-    font: 14px/1.5 Arial, sans-serif;
-    text-align: center;
+    padding: 16px;
     opacity: 0;
-    transform: translateY(-24px);
-    transition: opacity .3s ease, transform .45s ease;
+    transition: opacity .2s ease;
+    font: 14px/1.5 Arial, sans-serif;
 }
 
 body.project-description-open .project-description {
-    max-height: 3000px;
+    width: min(420px, 36vw);
+    max-height: min(60vh, 480px);
+    overflow: auto;
+    padding-left: 8px;
+    padding-right: 0;
+    opacity: 1;
+    visibility: visible;
+    transition-delay: 0s;
 }
 
 body.project-description-open .project-description p {
     opacity: 1;
-    transform: translateY(0);
+    transition-delay: .12s;
 }
 
-.row-shade { 
-    position: absolute; 
-    left: 0; 
-    width: 100%; 
-    background: rgba(0,0,0,.7); 
-    opacity: 0; 
-    transition: opacity .18s ease; 
+.project-info-toggle {
+    display: grid;
+    width: var(--project-circle-size);
+    height: var(--project-circle-size);
+    flex: none;
+    place-items: center;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: transparent;
+    color: #ffffff;
+    font: clamp(14px, 3.91vw, 40px)/1 Arial, sans-serif;
+    cursor: pointer;
+    position: relative;
+    z-index: 1;
+    transition: transform .18s ease, background-color .18s ease, color .18s ease;
 }
 
-.row-shade.is-dimmed { 
-    opacity: 1; 
+.project-info-toggle:hover {
+    color:#919191;
+}
+
+.project-info-toggle span {
+    transition: transform .25s ease;
+}
+
+body.project-description-open .project-info-toggle span {
+    transform: rotate(45deg);
+}
+
+@media (max-width: 600px) {
+    .project-info {
+        right: 16px;
+        bottom: 16px;
+    }
+
+    .project-description {
+        max-width: calc(100vw - 90px);
+    }
+
+    body.project-description-open .project-description {
+        width: min(320px, calc(100vw - 90px));
+        max-height: 55vh;
+    }
+
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .project-description {
+        transition-duration: .01ms;
+        transition-delay: 0s;
+    }
+
+    .project-description p {
+        transition-duration: .01ms;
+    }
 }
 
 .project-title { 
-    position: fixed; 
-    z-index: 11; 
+    position: absolute;
+    z-index: 1;
     left: 50%; 
-    bottom: 28px; 
-    transform: translateX(-50%); 
+    top: 50%;
+    transform: translate(-50%, -50%);
     color: #fff; 
     font: 14px Arial, sans-serif; 
-    opacity: 0; 
-    transition: opacity .18s ease; 
+    opacity: 0;
+    white-space: nowrap;
+    transition: opacity .18s ease, color .18s ease;
     pointer-events: none; 
 }
 
@@ -132,35 +227,13 @@ body.project-description-open .project-description p {
 }
 
 .project-title.is-selected { 
-    top: 32px; 
-    bottom: auto; 
     opacity: 1; 
-    animation: title-to-header 1.25s cubic-bezier(.22,.75,.25,1) forwards; 
     pointer-events: auto;
     cursor: pointer;
-    transition: opacity .18s ease, color .18s ease;
 }
 
 .project-title.is-selected:hover {
     color: #b3b3b3;
-}
-
-.project-title.is-leaving { 
-    top: 32px; 
-    bottom: auto; 
-    opacity: 1; 
-    animation: title-leave-header .35s ease-in forwards; 
-}
-
-@keyframes title-to-header {
-  0% { transform: translate(-50%, calc(100vh - 76px)); }
-  22% { transform: translate(-50%, calc(100vh + 120px)); }
-  23% { transform: translate(-50%, -100px); }
-  55%, 100% { transform: translate(-50%, -50%); }
-}
-@keyframes title-leave-header {
-  from { transform: translate(-50%, -50%); }
-  to { transform: translate(-50%, -120vh); }
 }
 
 .project-grid {
@@ -179,11 +252,28 @@ body.project-grid-visible .project-grid {
     background: #a2a2a2;
 }
 
+.project-grid-field-image {
+    display: block;
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    opacity: 0;
+}
+
+body.project-grid-jahresausstellung .project-grid-field-image {
+    opacity: 1;
+}
+
 .project-grid-field-tall {
     aspect-ratio: .76;
 }
 
+.project-grid-field-landscape {
+    grid-column: span 2;
+    aspect-ratio: 1.56;
+}
+
 .project-grid-field-wide {
     grid-column: 1 / -1;
-    aspect-ratio: 3.08;
+    aspect-ratio: 1.54;
 }

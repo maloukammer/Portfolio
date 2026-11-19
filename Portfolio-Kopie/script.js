@@ -19,7 +19,7 @@ const PROJEKTNAMEN = [
 /* ---------- Setup ---------- */
 const canvas = document.getElementById("c");
 paper.setup(canvas);
-const { Point, Path, CompoundPath, Group, Raster, Rectangle, Size } = paper;
+const { Point, Path, CompoundPath, Group, Raster, Size } = paper;
 const R = (a, b) => a + Math.random() * (b - a);
 const shuffle = a => a.map(x => [Math.random(), x]).sort((p, q) => p[0] - q[0]).map(p => p[1]);
 let W, H, G, VG, rows = [], img, selectedProject = -1;
@@ -69,9 +69,13 @@ canvas.addEventListener("pointermove", event => {
   if (!H || !VG) return;
   const y = event.clientY - canvas.getBoundingClientRect().top;
   const index = Math.floor(y / (H + VG));
+  canvas.classList.toggle("is-project-hovered", index >= 0 && index < rows.length && y <= index * (H + VG) + H);
   setActiveRow(index < rows.length ? index : -1);
 });
-canvas.addEventListener("pointerleave", () => setActiveRow(-1));
+canvas.addEventListener("pointerleave", () => {
+  canvas.classList.remove("is-project-hovered");
+  setActiveRow(-1);
+});
 canvas.addEventListener("click", event => {
   if (!H || selectedProject >= 0) return;
   const y = event.clientY - canvas.getBoundingClientRect().top;
@@ -80,6 +84,7 @@ canvas.addEventListener("click", event => {
     selectedProject = index;
     descriptionHoverArmed = false;
     document.body.classList.remove("project-description-open");
+    document.body.classList.toggle("project-grid-jahresausstellung", selectedProject === 1);
     document.body.classList.add("project-open");
     document.body.classList.remove("project-grid-visible");
     projectGrid.setAttribute("aria-hidden", "true");
@@ -91,6 +96,7 @@ document.querySelector("#projects-link").addEventListener("click", () => {
   selectedProject = -1;
   descriptionHoverArmed = false;
   document.body.classList.remove("project-description-open");
+  document.body.classList.remove("project-grid-jahresausstellung");
   document.body.classList.remove("project-grid-visible");
   projectGrid.setAttribute("aria-hidden", "true");
   document.body.classList.remove("project-open");
@@ -122,6 +128,31 @@ function neck(c1, c2, r, k) {
   s[2].handleOut = V(a2b - P2, h); s[3].handleIn = V(a1b + P2, h);
   p.clockwise = true;
   return p;
+}
+
+function roundedShape(left, top, width, height, topLeft, topRight, bottomRight, bottomLeft) {
+  const maxRadius = Math.min(width / 2, height / 2);
+  const [tl, tr, br, bl] = [topLeft, topRight, bottomRight, bottomLeft]
+    .map(radius => Math.max(0, Math.min(maxRadius, radius)));
+  const k = .5522847498;
+  const segment = (x, y, handleIn = [0, 0], handleOut = [0, 0]) =>
+    new paper.Segment(new Point(x, y), new Point(...handleIn), new Point(...handleOut));
+  const path = new Path({
+    segments: [
+      segment(left + tl, top, [-k * tl, 0]),
+      segment(left + width - tr, top, [0, 0], [k * tr, 0]),
+      segment(left + width, top + tr, [0, -k * tr]),
+      segment(left + width, top + height - br, [0, 0], [0, k * br]),
+      segment(left + width - br, top + height, [k * br, 0]),
+      segment(left + bl, top + height, [0, 0], [-k * bl, 0]),
+      segment(left, top + height - bl, [0, k * bl]),
+      segment(left, top + tl, [0, 0], [0, -k * tl])
+    ],
+    closed: true,
+    fillColor: "#000"
+  });
+  path.clockwise = true;
+  return path;
 }
 
 /* ---------- Zeilen ----------
@@ -237,6 +268,8 @@ paper.view.onFrame = e => {
     const targetY = selectedProject === rows.indexOf(row) ? 0 : row.y;
     row.viewY += (targetY - row.viewY) * k;
     const y = row.viewY, shapes = [], p = row.hoverProgress;
+    const smoothing = Math.max(0, Math.min(1, (p - .45) / .55));
+    const innerRadius = r * (1 - smoothing);
     row.raster.position = [W / 2, y + H / 2];
     let x = 0;
     it.forEach(i => {
@@ -282,14 +315,21 @@ paper.view.onFrame = e => {
     shapes.sort((p, q) => p[0] + p[1] / 2 - q[0] - q[1] / 2);
 
     // Pillen (Balken/Kreise) + Brücken zwischen benachbarten Elementen
-    const parts = shapes.map(([l, w]) => {
-      const p = new Path.Rectangle({ rectangle: new Rectangle(l, y, w, H), radius: r });
-      p.clockwise = true; return p;
+    const parts = shapes.map(([l, w], index) => {
+      const first = index === 0;
+      const last = index === shapes.length - 1;
+      return roundedShape(
+        l, y, w, H,
+        first ? r : innerRadius,
+        last ? r : innerRadius,
+        last ? r : innerRadius,
+        first ? r : innerRadius
+      );
     });
     for (let j = 0; j + 1 < shapes.length; j++) {
       const a = shapes[j][0] + shapes[j][1] - r, b = shapes[j + 1][0] + r, d = b - a;
       if (d <= 1 || d >= maxD) continue;
-      const kk = .5 * Math.min(1, (maxD - d) / (H * .5));
+      const kk = .5 * Math.min(1, (maxD - d) / (H * .5)) * (1 - smoothing);
       if (kk >= .03) parts.push(neck(new Point(a, y + r), new Point(b, y + r), r, kk));
     }
     row.clip.removeChildren();
