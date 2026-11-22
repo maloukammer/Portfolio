@@ -1,6 +1,11 @@
 html, body { 
     margin: 0; 
     background: #000; 
+    font-weight: 100;
+
+    font-family: "andale-mono-mt-pro", sans-serif;
+    font-weight: 400;
+    font-style: normal;
 }
 
 html {
@@ -21,8 +26,8 @@ html {
     align-items: center; 
     justify-content: space-between; 
     background: #000; 
-    color: #fff; 
-    font: 14px Arial, sans-serif; 
+    color: #fff;
+    font: 100 18px 'Inter', sans-serif;
 }
 
 .topbar {
@@ -60,12 +65,19 @@ html {
 
 main { 
     position: relative; 
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     width: 100%; 
+    min-height: calc(100vh - 64px);
     margin: 64px 0 0; 
-    padding: 24px 0; 
+    padding: 24px 0;
 }
 
 body.project-open main { 
+    display: block;
+    min-height: 0;
     padding-top: 0; 
 }
 
@@ -81,12 +93,18 @@ body.project-open canvas {
     cursor: default;
 }
 
+body.project-open canvas.is-project-hovered {
+    cursor: pointer;
+}
+
 .row-shades { 
     position: absolute; 
     z-index: 2; 
-    top: 24px; 
+    top: 50%;
+    height: calc(var(--project-circle-size) * 9.4);
     left: 0; 
     width: 100%; 
+    transform: translateY(-50%);
     pointer-events: none; 
 }
 
@@ -118,20 +136,25 @@ body.project-open .project-info {
     max-width: calc(100vw - 96px);
     max-height: var(--project-circle-size);
     overflow: hidden;
+    scrollbar-width: none;
     padding: 0;
     background: transparent;
     color: #fff;
     opacity: 0;
     visibility: hidden;
-    transition: width .4s cubic-bezier(.2,.8,.2,1), max-height .4s cubic-bezier(.2,.8,.2,1), padding .4s ease, opacity .2s ease, visibility 0s linear .4s;
+    transition: width .65s cubic-bezier(.22,1,.36,1), max-height .65s cubic-bezier(.22,1,.36,1), padding .65s cubic-bezier(.22,1,.36,1), opacity .3s ease-out, visibility 0s linear .65s;
+}
+
+.project-description::-webkit-scrollbar {
+    display: none;
 }
 
 .project-description p {
     margin: 0;
-    padding: 16px;
+    padding: 18px;
     opacity: 0;
-    transition: opacity .2s ease;
-    font: 14px/1.5 Arial, sans-serif;
+    transition: opacity .35s ease-out;
+    font: 100 14px/1.5 'Inter', sans-serif;
 }
 
 body.project-description-open .project-description {
@@ -147,7 +170,7 @@ body.project-description-open .project-description {
 
 body.project-description-open .project-description p {
     opacity: 1;
-    transition-delay: .12s;
+    transition-delay: .30s;
 }
 
 .project-info-toggle {
@@ -161,7 +184,7 @@ body.project-description-open .project-description p {
     border-radius: 50%;
     background: transparent;
     color: #ffffff;
-    font: clamp(14px, 3.91vw, 40px)/1 Arial, sans-serif;
+    font: 100 clamp(14px, 3.91vw, 40px)/1 'Inter', sans-serif;
     cursor: pointer;
     position: relative;
     z-index: 1;
@@ -214,8 +237,8 @@ body.project-description-open .project-info-toggle span {
     left: 50%; 
     top: 50%;
     transform: translate(-50%, -50%);
-    color: #fff; 
-    font: 14px Arial, sans-serif; 
+    color: #fff;
+    font: inherit;
     opacity: 0;
     white-space: nowrap;
     transition: opacity .18s ease, color .18s ease;
@@ -233,7 +256,7 @@ body.project-description-open .project-info-toggle span {
 }
 
 .project-title.is-selected:hover {
-    color: #b3b3b3;
+    color: #fff;
 }
 
 .project-grid {
@@ -258,10 +281,35 @@ body.project-grid-visible .project-grid {
     height: auto;
     object-fit: cover;
     opacity: 0;
+    transition: opacity .25s ease;
 }
 
 body.project-grid-jahresausstellung .project-grid-field-image {
     opacity: 1;
+}
+
+body.project-grid-jahresausstellung .project-grid-image-base {
+    opacity: 1;
+}
+
+.project-grid-image-swap {
+    position: relative;
+    overflow: hidden;
+}
+
+.project-grid-image-swap .project-grid-field-image {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.project-grid-image-swap .project-grid-image-hover {
+    opacity: 0;
+}
+
+body.project-grid-jahresausstellung .project-grid-image-swap:hover .project-grid-image-hover {
+    opacity: 0;
 }
 
 .project-grid-field-tall {
@@ -276,4 +324,64 @@ body.project-grid-jahresausstellung .project-grid-field-image {
 .project-grid-field-wide {
     grid-column: 1 / -1;
     aspect-ratio: 1.54;
+}
+
+.about-page {
+    display: block;
+    min-height: 100vh;
+    margin: 0;
+    padding: 84px 20px 20px;
+}
+
+.about-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 20px;
+}
+
+.about-portrait {
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: .76;
+    background: #a2a2a2;
+}
+
+.about-portrait-image {
+    position: absolute;
+    inset: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: none;
+}
+
+.about-portrait-hover {
+    opacity: 0;
+}
+
+.about-portrait:hover .about-portrait-hover {
+    opacity: 1;
+}
+
+.about-portrait:hover .about-portrait-base {
+    opacity: 0;
+}
+
+@media (max-width: 700px) {
+    .about-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 420px) {
+    .about-grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .about-portrait-image {
+        transition-duration: .01ms;
+    }
 }

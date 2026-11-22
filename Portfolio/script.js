@@ -48,7 +48,6 @@ descriptionToggle.addEventListener("click", () => {
 });
 
 function setActiveRow(index) {
-  if (selectedProject >= 0) index = -1;
   activeRow = index;
   rowShades.forEach((shade, i) => shade.classList.toggle("is-dimmed", index >= 0 && i !== index));
   titleLabel.textContent = index >= 0 ? PROJEKTNAMEN[index] : selectedProject >= 0 ? PROJEKTNAMEN[selectedProject] : "";
@@ -57,12 +56,16 @@ function setActiveRow(index) {
 }
 
 canvas.addEventListener("pointermove", event => {
-  if (selectedProject >= 0) return;
   if (!H || !VG) return;
   const y = event.clientY - canvas.getBoundingClientRect().top;
-  const index = Math.floor(y / (H + VG));
-  canvas.classList.toggle("is-project-hovered", index >= 0 && index < rows.length && y <= index * (H + VG) + H);
-  setActiveRow(index < rows.length ? index : -1);
+  const index = selectedProject >= 0
+    ? y >= 0 && y <= H ? selectedProject : -1
+    : Math.floor(y / (H + VG));
+  const isProjectHovered = selectedProject >= 0
+    ? index >= 0
+    : index >= 0 && index < rows.length && y <= index * (H + VG) + H;
+  canvas.classList.toggle("is-project-hovered", isProjectHovered);
+  setActiveRow(isProjectHovered ? index : -1);
 });
 canvas.addEventListener("pointerleave", () => {
   canvas.classList.remove("is-project-hovered");
@@ -79,6 +82,7 @@ canvas.addEventListener("click", event => {
     document.body.classList.add("project-open");
     document.body.classList.remove("project-grid-visible");
     projectGrid.setAttribute("aria-hidden", "true");
+    canvas.classList.remove("is-project-hovered");
     setActiveRow(-1);
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
@@ -243,7 +247,7 @@ paper.view.onFrame = e => {
       return;
     }
     const it = row.items;
-    const isHovered = selectedProject < 0 && rows.indexOf(row) === activeRow;
+    const isHovered = rows.indexOf(row) === activeRow;
     const hoverTarget = isHovered ? 1 : 0;
     row.hoverProgress += (hoverTarget - row.hoverProgress) * (1 - Math.exp(-dt * 1.8));
     if (!isHovered) {
