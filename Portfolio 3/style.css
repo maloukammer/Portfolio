@@ -1,0 +1,460 @@
+html, body { 
+    margin: 0; 
+    background: #000; 
+    font-family: "Roboto Mono", monospace;
+    font-weight: 200;
+    font-style: normal;
+}
+
+html {
+    overflow-x: clip;
+    scrollbar-width: thin;
+    scrollbar-color: #d3d3d3 #000;
+}
+
+html::-webkit-scrollbar {
+    width: 14px;
+}
+
+html::-webkit-scrollbar-track {
+    background: #000;
+}
+
+html::-webkit-scrollbar-thumb {
+    background: #d3d3d3;
+    border: 3px solid #000;
+    border-radius: 7px;
+}
+
+:root {
+    --project-circle-size: clamp(22px, 6.25vw, 64px);
+    --project-info-width: calc((100vw - 7 * var(--gap)) / 3 + var(--gap));
+}
+
+.topbar { 
+    position: fixed; 
+    z-index: 10; 
+    inset: 0 0 auto; 
+    height: 64px; 
+    padding: 0 32px; 
+    display: flex; 
+    align-items: center; 
+    justify-content: space-between; 
+    background: #000; 
+    color: #fff;
+    font: 200 14px "Roboto Mono", monospace;
+}
+
+.topbar {
+    isolation: isolate;
+}
+
+.topbar button { 
+    position: relative;
+    z-index: 2;
+    padding: 0; 
+    border: 0; 
+    background: none; 
+    color: inherit; 
+    font: inherit; 
+    cursor: pointer; 
+    transition: color .18s ease;
+}
+
+.topbar button:hover {
+    color: #919191;
+}
+
+.topbar-link {
+    position: relative;
+    z-index: 2;
+    color: inherit;
+    font: inherit;
+    text-decoration: none;
+    transition: color .18s ease;
+}
+
+.topbar-link:hover {
+    color: #919191;
+}
+
+main { 
+    position: relative; 
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%; 
+    height: calc(100vh - 64px);
+    height: calc(100svh - 64px);
+    min-height: 0;
+    margin: 64px 0 0; 
+    padding: 24px 0;
+    overflow: hidden;
+}
+
+body:not(.project-open) {
+    overflow: hidden;
+}
+
+body.project-open main { 
+    display: block;
+    height: auto;
+    min-height: 0;
+    padding-top: 0; 
+}
+
+canvas { 
+    display: block; 
+}
+
+canvas.is-project-hovered {
+    cursor: pointer;
+}
+
+body.project-open canvas {
+    cursor: default;
+}
+
+body.project-open canvas.is-project-hovered {
+    cursor: pointer;
+}
+
+.row-shades { 
+    position: absolute; 
+    z-index: 2; 
+    top: 50%;
+    height: calc(var(--project-circle-size) * 9.4);
+    left: 0; 
+    width: 100%; 
+    transform: translateY(-50%);
+    pointer-events: none; 
+}
+
+body.project-open .row-shades { 
+    display: none; 
+}
+
+.project-info {
+    position: fixed;
+    z-index: 20;
+    right: 40px;
+    bottom: 18px;
+    display: none;
+    align-items: flex-end;
+    gap: var(--gap);
+    overflow: hidden;
+    border-radius: calc(var(--project-circle-size) / 2);
+    background: #000;
+}
+
+body.project-open .project-info {
+    display: flex;
+}
+
+.project-description {
+    box-sizing: border-box;
+    width: 0;
+    min-width: 0;
+    max-width: calc(100vw - 96px);
+    max-height: var(--project-circle-size);
+    overflow: hidden;
+    scrollbar-width: none;
+    padding: 0;
+    background: transparent;
+    color: #fff;
+    opacity: 0;
+    visibility: hidden;
+    transition: width .65s cubic-bezier(.22,1,.36,1), max-height .65s cubic-bezier(.22,1,.36,1), padding .65s cubic-bezier(.22,1,.36,1), opacity .3s ease-out, visibility 0s linear .65s;
+}
+
+.project-description::-webkit-scrollbar {
+    display: none;
+}
+
+.project-description p {
+    margin: 0;
+    padding: 18px;
+    opacity: 0;
+    transition: opacity .35s ease-out;
+    font: 200 14px/1.5 "Roboto Mono", monospace;
+}
+
+body.project-description-open .project-description {
+    width: calc(var(--project-info-width) - var(--project-circle-size) - var(--gap));
+    max-height: min(60vh, 480px);
+    overflow: auto;
+    padding-left: 8px;
+    padding-right: 0;
+    opacity: 1;
+    visibility: visible;
+    transition-delay: 0s;
+}
+
+body.project-description-open .project-description p {
+    opacity: 1;
+    transition-delay: .30s;
+}
+
+.project-info-toggle {
+    display: grid;
+    width: var(--project-circle-size);
+    height: var(--project-circle-size);
+    aspect-ratio: 1 / 1;
+    flex: none;
+    place-items: center;
+    box-sizing: border-box;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: #000;
+    color: #ffffff;
+    font: 200 clamp(14px, 3.91vw, 40px)/1 "Roboto Mono", monospace;
+    cursor: pointer;
+    position: relative;
+    z-index: 1;
+    transition: transform .18s ease, background-color .18s ease, color .18s ease;
+}
+
+.project-info-toggle:hover {
+    color:#919191;
+}
+
+.project-info-toggle span {
+    display: grid;
+    place-items: center;
+    width: 1em;
+    height: 1em;
+    line-height: 1;
+    transition: transform .25s ease;
+}
+
+body.project-description-open .project-info-toggle span {
+    transform: rotate(45deg);
+}
+
+@media (max-width: 600px) {
+    :root {
+        --project-info-width: calc(100vw - 32px);
+    }
+
+    .project-info {
+        right: 16px;
+        bottom: 16px;
+    }
+
+    .project-description p {
+        font-size: 12px;
+    }
+
+    .project-description {
+        max-width: var(--project-info-width);
+    }
+
+    body.project-description-open .project-description {
+        width: calc(var(--project-info-width) - var(--project-circle-size) - var(--gap));
+        max-height: 55vh;
+    }
+
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .project-description {
+        transition-duration: .01ms;
+        transition-delay: 0s;
+    }
+
+    .project-description p {
+        transition-duration: .01ms;
+    }
+}
+
+.project-title { 
+    position: absolute;
+    z-index: 1;
+    left: 50%; 
+    top: 50%;
+    transform: translate(-50%, -50%);
+    color: #fff;
+    font: inherit;
+    opacity: 0;
+    white-space: nowrap;
+    transition: opacity .18s ease, color .18s ease;
+    pointer-events: none; 
+}
+
+.project-title.is-visible { 
+    opacity: 1; 
+}
+
+.project-title.is-selected { 
+    opacity: 1; 
+    pointer-events: auto;
+    cursor: pointer;
+}
+
+.project-title.is-selected:hover {
+    color: #fff;
+}
+
+/* Handy: schmalere Leiste, Projektname darf auf zwei Zeilen umbrechen */
+@media (max-width: 700px) {
+    .topbar {
+        padding: 0 16px;
+        font-size: 12px;
+    }
+
+    .project-title {
+        max-width: 44vw;
+        white-space: normal;
+        text-align: center;
+        font-size: 12px;
+        line-height: 1.15;
+    }
+}
+
+/* =========================================================
+   PROJEKT-RASTER
+   Jede Projekt-Seite = <section class="project-grid" data-project="NUMMER">
+   darin Zeilen <div class="row h-m"> mit Bildern <figure class="c2">
+   ========================================================= */
+
+:root {
+    --gap: 1.5vw;     /* Abstand zwischen den Bildern und Rand ums Raster */
+    --h-xs: 31.5vw;      /* Zeilenhöhe extra klein */
+    --h-s: 33vw;      /* Zeilenhöhe klein  */
+    --h-m: 45vw;      /* Zeilenhöhe mittel */
+    --h-mml: 49vw;      /* Zeilenhöhe mittel mittel gross */
+    --h-ml: 54vw;     /* Zeilenhöhe mittel gross  */
+    --h-l: 63vw;      /* Zeilenhöhe gross  */
+}
+
+/* Container: bleibt versteckt, bis JS ihn aktiviert (.is-active) */
+.project-grid {
+    display: none;
+    flex-direction: column;
+    gap: var(--gap);
+    padding: var(--gap);
+    background: #000000;
+}
+
+body.project-grid-visible .project-grid.is-active {
+    display: flex;
+}
+
+/* Eine Zeile = 6 gleich breite Spalten */
+.project-grid .row {
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: var(--gap);
+}
+
+/* Zeilenhöhe: class="row h-m" */
+.h-xs { height: var(--h-xs); }
+.h-s { height: var(--h-s); }
+.h-m { height: var(--h-m); }
+.h-mml { height: var(--h-mml); }
+.h-ml {height: var(--h-ml); }
+.h-l { height: var(--h-l); }
+
+/* Bildbreite in Spalten: class="c4" = 4 von 6 Spalten (Summe pro Zeile = 6) */
+.c1 { grid-column: span 1; }
+.c2 { grid-column: span 2; }
+.c3 { grid-column: span 3; }
+.c4 { grid-column: span 4; }
+.c5 { grid-column: span 5; }
+.c6 { grid-column: span 6; }
+
+/* Bild füllt den Rahmen immer komplett (wird bei Bedarf beschnitten) */
+.project-grid figure {
+    margin: 0;
+    overflow: hidden;
+    background: #a2a2a2;
+}
+
+.project-grid figure img,
+.project-grid figure video {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Handy: alle Bilder untereinander, Höhe ergibt sich aus dem Seitenverhältnis */
+@media (max-width: 700px) {
+    :root { --gap: 2.5vw; }
+
+    .project-grid .row {
+        grid-template-columns: minmax(0, 1fr);
+        height: auto;
+    }
+
+    .project-grid .row figure {
+        grid-column: span 1;
+        aspect-ratio: 3 / 2;     /* Querformat */
+    }
+
+    .project-grid .row figure.hoch {
+        aspect-ratio: 2 / 3;     /* Hochformat: class="c2 hoch" */
+    }
+}
+
+.about-page {
+    display: block;
+    min-height: 100vh;
+    margin: 0;
+    padding: 84px 20px 20px;
+}
+
+.about-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 20px;
+}
+
+.about-portrait {
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: .76;
+    background: #a2a2a2;
+}
+
+.about-portrait-image {
+    position: absolute;
+    inset: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: none;
+}
+
+.about-portrait-hover {
+    opacity: 0;
+}
+
+.about-portrait:hover .about-portrait-hover {
+    opacity: 1;
+}
+
+.about-portrait:hover .about-portrait-base {
+    opacity: 0;
+}
+
+@media (max-width: 700px) {
+    .about-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 420px) {
+    .about-grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .about-portrait-image {
+        transition-duration: .01ms;
+    }
+}

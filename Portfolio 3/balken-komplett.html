@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Malou Kammer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@200&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+
+</head>
+<body>
+  <header class="topbar">
+    <button id="projects-link" type="button">Projekte</button>
+    <div class="project-title" aria-live="polite"></div>
+    <a class="topbar-link" href="about.html">Über mich</a>
+  </header>
+
+  <main>
+    <canvas id="c"></canvas>
+    <div class="row-shades" aria-hidden="true"></div>
+  </main>
+
+  <aside class="project-info" aria-label="Projektinformation">
+    <section class="project-description" id="project-description" aria-label="Projektbeschreibung" aria-hidden="true">
+      <p>Wähle ein Projekt aus, um seine Beschreibung zu lesen.</p>
+    </section>
+    <button class="project-info-toggle" type="button" aria-label="Projektbeschreibung anzeigen" aria-expanded="false" aria-controls="project-description">
+      <span aria-hidden="true">+</span>
+    </button>
+  </aside>
+
+  <!-- =====================================================================
+       PROJEKT-RASTER
+       - Pro Projekt ein <section> mit data-project="NUMMER".
+         Die Nummer ist die Position in PROJEKTNAMEN in script.js (0 = erstes Projekt).
+       - Pro Zeile ein <div class="row h-m"> (Höhe: h-s / h-m / h-l)
+       - Pro Bild ein <figure class="c2"> (Breite in Spalten: c1 bis c6, Summe pro Zeile = 6)
+       - class="hoch" zusätzlich bei Hochformaten: gilt nur für die Handy-Ansicht
+       ===================================================================== -->
+  
+
+
+  <!-- Projekt 0: 24 Stunden -->
+  <section class="project-grid" data-project="0" aria-label="Projektinhalt 24 Stunden" aria-hidden="true">
+
+    <!-- Zeile 1: klein, Querformat (3) + Querformat (3) = 6 -->
+    <div class="row h-s">
+      <figure class="c3"><img src="images/Drehbuch_2.jpg" alt="24 Stunden"></figure>
+      <figure class="c3"><img src="images/Drehbuch_zoom_4.jpg" alt="24 Stunden"></figure>
+    </div>
+
+    <!-- Zeile 2: gross, ein Bild über die ganze Breite (6) -->
+    <div class="row h-l">
+      <figure class="c6"><img src="images/Drehbuch_4.jpg" alt="24 Stunden"></figure>
+    </div>
+
+    <!-- Zeile 3: mittel hoch, Hochformat (2) + Querformat (4) = 6 -->
+    <div class="row h-m">
+      <figure class="c2 hoch"><img src="images/Drehbuch_zoom_2.jpg" alt="24 Stunden"></figure>
+      <figure class="c4"><img src="images/Drehbuch_3D.jpg" alt="24 Stunden"></figure>
+    </div>
+
+    <!-- Zeile 4: gross, ein Bild über die ganze Breite (6) -->
+    <div class="row h-l">
+      <figure class="c6"><img src="images/Drehbuch_7.jpg" alt="24 Stunden"></figure>
+    </div>
+    
+    <!-- Zeile 1: klein, Querformat (3) + Querformat (3) = 6 -->
+    <div class="row h-s">
+      <figure class="c3"><img src="images/Drehbuch_10.jpg" alt="24 Stunden"></figure>
+      <figure class="c3"><img src="images/Drehbuch_9.jpg" alt="24 Stunden"></figure>
+    </div>
+
+    <!-- Zeile 3: mittel hoch, Hochformat (2) + Querformat (4) = 6 -->
+    <div class="row h-m">
+      <figure class="c2 hoch"><img src="images/Drehbuch_zoom_1.jpg" alt="24 Stunden"></figure>
+      <figure class="c4"><img src="images/Drehbuch_8.jpg" alt="24 Stunden"></figure>
+    </div>
+
+  </section>
+
+  
+  
+  <!-- Projekt 1: Jahresausstellung Plakat -->
+  <section class="project-grid" data-project="1" aria-label="Projektinhalt Jahresausstellung Plakat" aria-hidden="true">
+
+    <!-- Zeile 1: mittel hoch, Hochformat (2) + Querformat (4) = 6 -->
+    <div class="row h-m">
+      <figure class="c2 hoch"><img src="images/jahresausstellung-plakat.png" alt="Jahresausstellung Plakat"></figure>
+      <figure class="c4"><img src="images/jahresausstellung-plakat-querformat.png" alt="Jahresausstellung Plakat im Querformat"></figure>
+    </div>
+
+    <!-- Zeile 2: gross, ein Bild über die ganze Breite (6) -->
+    <div class="row h-l">
+      <figure class="c6"><img src="images/jahresausstellung-plakat-sehr-breit.png" alt="Jahresausstellung Plakat in sehr breitem Format"></figure>
+    </div>
+
+    <!-- Zeile 3: mittel hoch, Querformat (4) + Hochformat (2) = 6 -->
+    <div class="row h-m">
+      <figure class="c4"><img src="images/jahresausstellung-plakat-querformat-2.png" alt="Jahresausstellung Plakat im Querformat"></figure>
+      <figure class="c2 hoch"><img src="images/jahresausstellung-plakat-rechts.png" alt="Jahresausstellung Plakat"></figure>
+    </div>
+
+    <!-- Zeile 4: gross, ein Bild über die ganze Breite (6) -->
+    <div class="row h-l">
+      <figure class="c6"><img src="images/jahresausstellung-plakat-breit-2.png" alt="Jahresausstellung Plakat im breiten Format"></figure>
+    </div>
+
+  </section>
+
+
+
+
+  <!-- Projekt 2: Designer und Leuchten -->
+  <section class="project-grid" data-project="2" aria-label="Projektinhalt Designer und Leuchten" aria-hidden="true">
+
+    <!-- Zeile 1: klein, Querformat (3) + Querformat (3) = 6 -->
+    <div class="row h-s">
+      <figure class="c3"><img src="images/Designobjekte_zoom_1.jpg" alt="Designer und Leuchten"></figure>
+      <figure class="c3"><img src="images/Designobjekte_1.jpg" alt="Designer und Leuchten"></figure>
+    </div>
+
+    <!-- Zeile 2: gross, ein Bild über die ganze Breite (6) -->
+    <div class="row h-l">
+      <figure class="c6"><img src="images/Designobjekte_5.jpg" alt="Designer und Leuchten"></figure>
+    </div>
+
+    <!-- Zeile 3: mittel hoch,  Querformat (4) + Hochformat (2) = 6 -->
+    <div class="row h-m">
+      <figure class="c4"><img src="images/Designobjekt_3D.jpg" alt="Designer und Leuchten"></figure>
+      <figure class="c2 hoch"><img src="images/Designobjekte_zoom_2.jpg" alt="Designer und Leuchten"></figure>
+    </div>
+
+    <!-- Zeile 1: klein, Querformat (3) + Querformat (3) = 6 -->
+    <div class="row h-s">
+      <figure class="c3"><img src="images/Designobjekte_12.jpg" alt="Designer und Leuchten"></figure>
+      <figure class="c3"><img src="images/Designobjekte_13.jpg" alt="Designer und Leuchten"></figure>
+    </div>
+
+    <!-- Zeile 4: gross, ein Bild über die ganze Breite (6) -->
+    <div class="row h-l">
+      <figure class="c6"><img src="images/Designobjekte_4.jpg" alt="Designer und Leuchten"></figure>
+    </div>
+    
+    <!-- Zeile 1: klein, Querformat (3) + Querformat (3) = 6 -->
+    <div class="row h-s">
+      <figure class="c3"><img src="images/Designobjekte_8.jpg" alt="Designer und Leuchten"></figure>
+      <figure class="c3"><img src="images/Designobjekte_11.jpg" alt="Designer und Leuchten"></figure>
+    </div>
+
+  </section>
+
+
+
+
+    <!-- Projekt 3: Just Around the Corner -->
+  <section class="project-grid" data-project="3" aria-label="Projektinhalt Just Around the Corner" aria-hidden="true">
+
+    <!-- Zeile 3: mittel hoch, Hochformat (2) + Querformat (4) = 6 -->
+    <div class="row h-m">
+      <figure class="c2 hoch"><img src="images/London_zoom_5.jpg" alt="Just Around the Corner"></figure>
+      <figure class="c4"><img src="images/London_2.jpg" alt="Just Around the Corner"></figure>
+    </div>
+
+    <!-- Zeile 2: gross, ein Bild über die ganze Breite (6) -->
+    <div class="row h-l">
+      <figure class="c6"><img src="images/London_3.jpg" alt="Just Around the Corner"></figure>
+    </div>
+
+    <!-- Zeile 3: mittel hoch,  Querformat (4) + Hochformat (2) = 6 -->
+    <div class="row h-m">
+      <figure class="c4"><img src="images/London_3D.jpg" alt="Just Around the Corner"></figure>
+      <figure class="c2 hoch"><img src="images/London_zoom_2.jpg" alt="Just Around the Corner"></figure>
+    </div>
+
+    <!-- Zeile 4: gross, ein Bild über die ganze Breite (6) -->
+    <div class="row h-l">
+      <figure class="c6"><img src="images/London_12.jpg" alt="Just Around the Corner"></figure>
+    </div>
+    
+    <!-- Zeile 1: klein, Querformat (3) + Querformat (3) = 6 -->
+    <div class="row h-s">
+      <figure class="c3"><img src="images/London_17.jpg" alt="Just Around the Corner"></figure>
+      <figure class="c3"><img src="images/London_16.jpg" alt="Just Around the Corner"></figure>
+    </div>
+
+    <!-- Zeile 4: gross, ein Bild über die ganze Breite (6) -->
+    <div class="row h-l">
+      <figure class="c6"><img src="images/London_4.jpg" alt="Just Around the Corner"></figure>
+    </div>
+
+    <!-- Zeile 3: mittel hoch, Hochformat (2) + Querformat (4) = 6 -->
+    <div class="row h-m">
+      <figure class="c2 hoch"><img src="images/London_20.jpg" alt="Just Around the Corner"></figure>
+      <figure class="c4"><img src="images/London_zoom_1.jpg" alt="Just Around the Corner"></figure>
+    </div>
+
+    <!-- Zeile 4: gross, ein Bild über die ganze Breite (6) -->
+    <div class="row h-l">
+      <figure class="c6"><img src="images/London_9.jpg" alt="Just Around the Corner"></figure>
+    </div>
+
+    <!-- Zeile 4: extra klein, ein Bild über die ganze Breite (6) -->
+    <div class="row h-xs">
+      <figure class="c6"><img src="images/London_15.jpg" alt="Just Around the Corner"></figure>
+    </div>
+
+  </section>
+
+
+
+  <!-- Projekt 4: Grundlagen der Gestaltung -->
+  <section class="project-grid" data-project="4" aria-label="Projektinhalt Grundlagen der Gestaltung" aria-hidden="true">
+
+    <!-- Zeile 3: mittel gross,  Quadrat (3) + Quadrat (3) = 6 -->
+    <div class="row h-mml">
+      <figure class="c3"><video autoplay loop muted playsinline aria-label="Grundlagen der Gestaltung"><source src="images/Grundlagen der Gestaltung_1.mp4" type="video/mp4"></video></figure>
+      <figure class="c3"><img src="images/Grundlagen der Gestaltung_2.jpg" alt="Grundlagen der Gestaltung"></figure>
+    </div>
+
+    <!-- Zeile 3: mittel gross,  Quadrat (3) + Quadrat (3) = 6 -->
+    <div class="row h-mml">
+      <figure class="c3"><img src="images/Grundlagen der Gestaltung_3.jpg" alt="Grundlagen der Gestaltung"></figure>
+      <figure class="c3"><video autoplay loop muted playsinline aria-label="Grundlagen der Gestaltung"><source src="images/Grundlagen der Gestaltung_4.mp4" type="video/mp4"></video></figure>
+    </div>
+
+    <!-- Zeile 3: mittel gross,  Quadrat (3) + Quadrat (3) = 6 -->
+    <div class="row h-mml">
+      <figure class="c3"><video autoplay loop muted playsinline aria-label="Grundlagen der Gestaltung"><source src="images/Grundlagen der Gestaltung_5.mp4" type="video/mp4"></video></figure>
+      <figure class="c3"><img src="images/Grundlagen der Gestaltung_6.jpg" alt="Grundlagen der Gestaltung"></figure>
+    </div>
+
+    <!-- Zeile 3: mittel gross,  Quadrat (3) + Quadrat (3) = 6 -->
+    <div class="row h-mml">
+      <figure class="c3"><img src="images/Grundlagen der Gestaltung_7.jpg" alt="Grundlagen der Gestaltung"></figure>
+      <figure class="c3"><video autoplay loop muted playsinline aria-label="Grundlagen der Gestaltung"><source src="images/Grundlagen der Gestaltung_8.mp4" type="video/mp4"></video></figure>
+    </div>
+
+    <!-- Zeile 3: mittel gross,  Quadrat (3) + Quadrat (3) = 6 -->
+    <div class="row h-mml">
+      <figure class="c3"><video autoplay loop muted playsinline aria-label="Grundlagen der Gestaltung"><source src="images/Grundlagen der Gestaltung_9.mp4" type="video/mp4"></video></figure>
+      <figure class="c3"><img src="images/Grundlagen der Gestaltung_10.jpg" alt="Grundlagen der Gestaltung"></figure>
+    </div>
+
+    <!-- Zeile 3: mittel gross,  Quadrat (3) + Quadrat (3) = 6 -->
+    <div class="row h-mml">
+      <figure class="c3"><img src="images/Grundlagen der Gestaltung_11.jpg" alt="Grundlagen der Gestaltung"></figure>
+    </div>
+
+  </section>
+
+
+
+
+
+  <!-- Projekt 5: Master-Abschlusskonzerte-Plakat -->
+  <section class="project-grid" data-project="5" aria-label="Projektinhalt Master-Abschlusskonzerte-Plakat" aria-hidden="true">
+
+    <!-- Zeile 3: mittel gross,  Hochformat (2) + Querformat (4) = 6 -->
+    <div class="row h-ml">
+      <figure class="c2 hoch"><video autoplay loop muted playsinline aria-label="Master-Abschlusskonzerte-Plakat"><source src="images/Masterabschlusskonzerte Plakat_1.mp4" type="video/mp4"></video></figure>
+      <figure class="c4"><img src="images/Masterabschlusskonzerte Plakat_2.jpg" alt="Master-Abschlusskonzerte-Plakat"></figure>
+    </div>
+
+    <!-- Zeile 3: mittel gross,  Hochformat (2) + Hochformat (2) + Hochformat (2) = 6 -->
+    <div class="row h-ml">
+      <figure class="c2 hoch"><video autoplay loop muted playsinline aria-label="Master-Abschlusskonzerte-Plakat"><source src="images/Masterabschlusskonzerte Plakat_3.mp4" type="video/mp4"></video></figure>
+      <figure class="c2 hoch"><video autoplay loop muted playsinline aria-label="Master-Abschlusskonzerte-Plakat"><source src="images/Masterabschlusskonzerte Plakat_4.mp4" type="video/mp4"></video></figure>
+      <figure class="c2 hoch"><video autoplay loop muted playsinline aria-label="Master-Abschlusskonzerte-Plakat"><source src="images/Masterabschlusskonzerte Plakat_5.mp4" type="video/mp4"></video></figure>
+    </div>
+
+    <!-- Zeile 3: mittel gross,  Hochformat (2) + Hochformat (2) + Hochformat (2) = 6 -->
+    <div class="row h-ml">
+      <figure class="c2 hoch"><video autoplay loop muted playsinline aria-label="Master-Abschlusskonzerte-Plakat"><source src="images/Masterabschlusskonzerte Plakat_6.mp4" type="video/mp4"></video></figure>
+      <figure class="c2 hoch"><img src="images/Masterabschlusskonzerte Plakat_7.jpeg" alt="Master-Abschlusskonzerte-Plakat"></figure>
+      <figure class="c2 hoch"><video autoplay loop muted playsinline aria-label="Master-Abschlusskonzerte-Plakat"><source src="images/Masterabschlusskonzerte Plakat_8.mp4" type="video/mp4"></video></figure>
+    </div>
+
+    <!-- Zeile 3: mittel gross,  Hochformat (2) + Hochformat (2) + Hochformat (2) = 6 -->
+    <div class="row h-ml">
+      <figure class="c2 hoch"><video autoplay loop muted playsinline aria-label="Master-Abschlusskonzerte-Plakat"><source src="images/Masterabschlusskonzerte Plakat_9.mp4" type="video/mp4"></video></figure>
+      <figure class="c2 hoch"><video autoplay loop muted playsinline aria-label="Master-Abschlusskonzerte-Plakat"><source src="images/Masterabschlusskonzerte Plakat_10.mp4" type="video/mp4"></video></figure>
+    </div>
+
+  </section>
+
+
+
+
+
+  <!-- Projekt 6: Wort in Bewegung -->
+  <section class="project-grid" data-project="6" aria-label="Projektinhalt Wort in Bewegung" aria-hidden="true">
+
+    <!-- Zeile 3: mittel gross,  Hochformat (2) + Hochformat (2) + Hochformat (2) = 6 -->
+    <div class="row h-ml">
+      <figure class="c2 hoch"><video autoplay loop muted playsinline aria-label="Wort in Bewegung"><source src="images/Motion Graphics_1.mp4" type="video/mp4"></video></figure>
+      <figure class="c2 hoch"><video autoplay loop muted playsinline aria-label="Wort in Bewegung"><source src="images/Motion Graphics_2.mp4" type="video/mp4"></video></figure>
+      <figure class="c2 hoch"><video autoplay loop muted playsinline aria-label="Wort in Bewegung"><source src="images/Motion Graphics_3.mp4" type="video/mp4"></video></figure>
+    </div>
+
+    <!-- Zeile 3: mittel gross,  Hochformat (2) + Hochformat (2) + Hochformat (2) = 6 -->
+    <div class="row h-ml">
+      <figure class="c2 hoch"><video autoplay loop muted playsinline aria-label="Wort in Bewegung"><source src="images/Motion Graphics_4.mp4" type="video/mp4"></video></figure>
+      <figure class="c2 hoch"><video autoplay loop muted playsinline aria-label="Wort in Bewegung"><source src="images/Motion Graphics_5.mp4" type="video/mp4"></video></figure>
+      <figure class="c2 hoch"><video autoplay loop muted playsinline aria-label="Wort in Bewegung"><source src="images/Motion Graphics_6.mp4" type="video/mp4"></video></figure>
+    </div>
+
+    <!-- Zeile 3: mittel gross,  Hochformat (2) + Hochformat (2) + Hochformat (2) = 6 -->
+    <div class="row h-ml">
+      <figure class="c2 hoch"><video autoplay loop muted playsinline aria-label="Wort in Bewegung"><source src="images/Motion Graphics_7.mp4" type="video/mp4"></video></figure>
+      <figure class="c2 hoch"><video autoplay loop muted playsinline aria-label="Wort in Bewegung"><source src="images/Motion Graphics_8.mp4" type="video/mp4"></video></figure>
+      <figure class="c2 hoch"><video autoplay loop muted playsinline aria-label="Wort in Bewegung"><source src="images/Motion Graphics_9.mp4" type="video/mp4"></video></figure>
+    </div>
+
+    <!-- Zeile 3: mittel gross,  Hochformat (2) + Hochformat (2) + Hochformat (2) = 6 -->
+    <div class="row h-ml">
+      <figure class="c2 hoch"><video autoplay loop muted playsinline aria-label="Wort in Bewegung"><source src="images/Motion Graphics_10.mp4" type="video/mp4"></video></figure>
+      <figure class="c2 hoch"><video autoplay loop muted playsinline aria-label="Wort in Bewegung"><source src="images/Motion Graphics_11.mp4" type="video/mp4"></video></figure>
+      <figure class="c2 hoch"><video autoplay loop muted playsinline aria-label="Wort in Bewegung"><source src="images/Motion Graphics_12.mp4" type="video/mp4"></video></figure>
+    </div>
+
+    <!-- Zeile 3: mittel gross,  Hochformat (2) + Hochformat (2) + Hochformat (2) = 6 -->
+    <div class="row h-ml">
+      <figure class="c2 hoch"><video autoplay loop muted playsinline aria-label="Wort in Bewegung"><source src="images/Motion Graphics_13.mp4" type="video/mp4"></video></figure>
+    </div>
+
+  </section>
+
+
+
+
+      <!-- Projekt 7: Avec Ou Sans Bulles -->
+  <section class="project-grid" data-project="7" aria-label="Projektinhalt Avec Ou Sans Bulles" aria-hidden="true">
+
+        <!-- Zeile 1: klein, Querformat (3) + Querformat (3) = 6 -->
+    <div class="row h-s">
+      <figure class="c3"><img src="images/Paris_1.jpg" alt="Avec Ou Sans Bulles"></figure>
+      <figure class="c3"><img src="images/Paris_zoom_2.jpg" alt="Avec Ou Sans Bulles"></figure>
+    </div>
+    
+    <!-- Zeile 2: gross, ein Bild über die ganze Breite (6) -->
+    <div class="row h-l">
+      <figure class="c6"><img src="images/Paris_5.jpg" alt="Avec Ou Sans Bulles"></figure>
+    </div>
+
+    <!-- Zeile 3: mittel hoch,  Querformat (4) + Hochformat (2) = 6 -->
+    <div class="row h-m">
+      <figure class="c4"><img src="images/Paris_7.jpg" alt="Avec Ou Sans Bulles"></figure>
+      <figure class="c2 hoch"><img src="images/Paris_3D.jpg" alt="Avec Ou Sans Bulles"></figure>
+    </div>
+
+    <!-- Zeile 4: gross, ein Bild über die ganze Breite (6) -->
+    <div class="row h-l">
+      <figure class="c6"><img src="images/Paris_4.jpg" alt="Avec Ou Sans Bulles"></figure>
+    </div>
+    
+    <!-- Zeile 1: klein, Querformat (3) + Querformat (3) = 6 -->
+    <div class="row h-s">
+      <figure class="c3"><img src="images/Paris_zoom_3.jpg" alt="Avec Ou Sans Bulles"></figure>
+      <figure class="c3"><img src="images/Paris_11.jpg" alt="Avec Ou Sans Bulles"></figure>
+    </div>
+
+    <!-- Zeile 4: gross, ein Bild über die ganze Breite (6) -->
+    <div class="row h-m">
+      <figure class="c6"><img src="images/Paris_10.jpg" alt="Avec Ou Sans Bulles"></figure>
+    </div>
+
+    <!-- Zeile 1: klein, Querformat (3) + Querformat (3) = 6 -->
+    <div class="row h-s">
+      <figure class="c3"><img src="images/Paris_12.jpg" alt="Avec Ou Sans Bulles"></figure>
+      <figure class="c3"><img src="images/Paris_zoom_1.jpg" alt="Avec Ou Sans Bulles"></figure>
+    </div>
+
+  </section>
+
+
+  <!-- Projekt 8: Objekt, Schallplatte, Schrift -->
+  <section class="project-grid" data-project="8" aria-label="Projektinhalt Objekt, Schallplatte, Schrift" aria-hidden="true">
+
+    <!-- Zeile 3: mittel hoch,  Querformat (4) + Hochformat (2) = 6 -->
+    <div class="row h-m">
+      <figure class="c4"><img src="images/Objekt, Plattencover, Schrift_1.jpg" alt="Objekt, Schallplatte, Schrift"></figure>
+      <figure class="c2 hoch"><img src="images/Objekt, Plattencover, Schrift_2.jpg" alt="Objekt, Schallplatte, Schrift"></figure>
+    </div>
+    
+    <!-- Zeile 2: gross, ein Bild über die ganze Breite (6) -->
+    <div class="row h-l">
+      <figure class="c6"><img src="images/Objekt, Plattencover, Schrift_3.jpg" alt="Objekt, Schallplatte, Schrift"></figure>
+    </div>
+
+    <!-- Zeile 1: klein, Querformat (3) + Querformat (3) = 6 -->
+    <div class="row h-s">
+      <figure class="c3"><img src="images/Objekt, Plattencover, Schrift_4.jpg" alt="Objekt, Schallplatte, Schrift"></figure>
+      <figure class="c3"><img src="images/Objekt, Plattencover, Schrift_5.jpg" alt="Objekt, Schallplatte, Schrift"></figure>
+    </div>
+
+    <!-- Zeile 1: klein, Querformat (3) + Querformat (3) = 6 -->
+    <div class="row h-s">
+      <figure class="c3"><img src="images/Objekt, Plattencover, Schrift_6.jpg" alt="Objekt, Schallplatte, Schrift"></figure>
+      <figure class="c3"><img src="images/Objekt, Plattencover, Schrift_7.jpg" alt="Objekt, Schallplatte, Schrift"></figure>
+    </div>
+
+    <!-- Zeile 2: gross, ein Bild über die ganze Breite (6) -->
+    <div class="row h-l">
+      <figure class="c6"><img src="images/Objekt, Plattencover, Schrift_8.jpg" alt="Objekt, Schallplatte, Schrift"></figure>
+    </div>
+
+    <!-- Zeile 4: extra klein, Querformat (4) + Querformat (2) -->
+    <div class="row h-xs">
+      <figure class="c4"><img src="images/Objekt, Plattencover, Schrift_9.jpeg" alt="Objekt, Schallplatte, Schrift"></figure>
+      <figure class="c2"><img src="images/Objekt, Plattencover, Schrift_10.jpeg" alt="Objekt, Schallplatte, Schrift"></figure>
+    </div>
+
+    <!-- Zeile 2: gross, Hochformat (3) + Hochformat (3) -->
+    <div class="row h-l">
+      <figure class="c3 hoch"><img src="images/Objekt, Plattencover, Schrift_11.jpg" alt="Objekt, Schallplatte, Schrift"></figure>
+      <figure class="c3 hoch"><img src="images/Objekt, Plattencover, Schrift_12.jpg" alt="Objekt, Schallplatte, Schrift"></figure>
+    </div>
+
+  </section>
+
+
+  <!-- Projekt 9: Sensi Burger -->
+  <section class="project-grid" data-project="9" aria-label="Projektinhalt Sensi Burger" aria-hidden="true">
+
+        <!-- Zeile 1: klein, Querformat (3) + Querformat (3) = 6 -->
+    <div class="row h-s">
+      <figure class="c3"><img src="images/Sensi_1.jpg" alt="Sensi Burger"></figure>
+      <figure class="c3"><img src="images/Sensi_2.jpg" alt="Sensi Burger"></figure>
+    </div>
+    
+    <!-- Zeile 2: gross, ein Bild über die ganze Breite (6) -->
+    <div class="row h-l">
+      <figure class="c6"><img src="images/Sensi_3.jpg" alt="Sensi Burger"></figure>
+    </div>
+    
+    <!-- Zeile 1: klein, Querformat (3) + Querformat (3) = 6 -->
+    <div class="row h-s">
+      <figure class="c3"><img src="images/Sensi_4.jpg" alt="Sensi Burger"></figure>
+      <figure class="c3"><img src="images/Sensi_5.jpg" alt="Sensi Burger"></figure>
+    </div>
+
+    <!-- Zeile 4: gross, ein Bild über die ganze Breite (6) -->
+    <div class="row h-m">
+      <figure class="c6"><img src="images/Sensi_6.jpg" alt="Sensi Burger"></figure>
+    </div>
+
+    <!-- Zeile 3: mittel hoch,  Hochformat (2) + Hochformat (2) + Hochformat (2) = 6 -->
+    <div class="row h-m">
+      <figure class="c2 hoch"><img src="images/Sensi_7.jpg" alt="Sensi Burger"></figure>
+      <figure class="c2 hoch"><img src="images/Sensi_8.jpg" alt="Sensi Burger"></figure>
+      <figure class="c2 hoch"><img src="images/Sensi_9.jpeg" alt="Sensi Burger"></figure>
+    </div>
+    
+  </section>
+
+  <!-- Weiteres Projekt: Block oben kopieren, data-project ändern, Bilder und Klassen anpassen.
+       Die Nummer data-project entspricht der Position in PROJEKTNAMEN (script.js), Zählung ab 0:
+       0 = 24 Stunden, 1 = Jahresausstellung Plakat, 2 = Designer und Leuchten, 3 = Just Around The Corner,
+       4 = Grundlagen der Gestaltung, 5 = Master-Abschlusskonzerte-Plakat, 6 = Wort in Bewegung,
+       7 = Avec Ou Sans Bulles, 8 = Objekt, Schallplatte, Schrift, 9 = Sensi Burger -->
+  <!-- <section class="project-grid" data-project="0" aria-hidden="true"> ... </section> -->
+
+  <!-- paper.js erzeugt die weichen Übergänge (Meta Balls) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/paper.js/0.12.17/paper-core.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

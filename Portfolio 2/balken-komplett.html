@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Malou Kammer</title>
+  <link rel="stylesheet" href="style.css">
+
+</head>
+<body>
+  <header class="topbar">
+    <button id="projects-link" type="button">Projekte</button>
+    <div class="project-title" aria-live="polite"></div>
+    <a class="topbar-link" href="about.html">About Me</a>
+    <link rel="stylesheet" href="https://use.typekit.net/cwq3esu.css">
+  </header>
+
+  <main>
+    <canvas id="c"></canvas>
+    <div class="row-shades" aria-hidden="true"></div>
+  </main>
+
+  <aside class="project-info" aria-label="Projektinformation">
+    <section class="project-description" id="project-description" aria-label="Projektbeschreibung" aria-hidden="true">
+      <p>Zwanzig Corner Shops in London und ihre ganz eigenen Geschichten bilden die Grundlage dieses Buchprojekts. Während eines Studienaufenthalts in London haben alle angehenden Grafiker*innen einen Laden erkundet, fotografiert und dokumentiert. Aus den unterschiedlichen Beobachtungen und gesammelten Materialien entstand mein Buch. Die Gestaltung führt durch die verschiedenen Shops und stellt sie auf einzelnen Seiten gegenüber. Fotografien, persönliche Eindrücke und Texte geben Einblicke in ihren Alltag und zeigen, was die kleinen Geschäfte verbindet und voneinander unterscheidet.</p>
+    </section>
+    <button class="project-info-toggle" type="button" aria-label="Projektbeschreibung anzeigen" aria-expanded="false" aria-controls="project-description">
+      <span aria-hidden="true">+</span>
+    </button>
+  </aside>
+
+  <!-- =====================================================================
+       PROJEKT-RASTER
+       - Pro Projekt ein <section> mit data-project="NUMMER".
+         Die Nummer ist die Position in PROJEKTNAMEN in script.js (0 = erstes Projekt).
+       - Pro Zeile ein <div class="row h-m"> (Höhe: h-s / h-m / h-l)
+       - Pro Bild ein <figure class="c2"> (Breite in Spalten: c1 bis c6, Summe pro Zeile = 6)
+       - class="hoch" zusätzlich bei Hochformaten: gilt nur für die Handy-Ansicht
+       ===================================================================== -->
+
+  <!-- Projekt 1: Jahresausstellung Plakat -->
+  <section class="project-grid" data-project="1" aria-label="Projektinhalt Jahresausstellung Plakat" aria-hidden="true">
+
+    <!-- Zeile 1: mittel hoch, Hochformat (2) + Querformat (4) = 6 -->
+    <div class="row h-m">
+      <figure class="c2 hoch"><img src="images/jahresausstellung-plakat.png" alt="Jahresausstellung Plakat"></figure>
+      <figure class="c4"><img src="images/jahresausstellung-plakat-querformat.png" alt="Jahresausstellung Plakat im Querformat"></figure>
+    </div>
+
+    <!-- Zeile 2: gross, ein Bild über die ganze Breite (6) -->
+    <div class="row h-l">
+      <figure class="c6"><img src="images/jahresausstellung-plakat-sehr-breit.png" alt="Jahresausstellung Plakat in sehr breitem Format"></figure>
+    </div>
+
+    <!-- Zeile 3: mittel hoch, Querformat (4) + Hochformat (2) = 6 -->
+    <div class="row h-m">
+      <figure class="c4"><img src="images/jahresausstellung-plakat-querformat-2.png" alt="Jahresausstellung Plakat im Querformat"></figure>
+      <figure class="c2 hoch"><img src="images/jahresausstellung-plakat-rechts.png" alt="Jahresausstellung Plakat"></figure>
+    </div>
+
+    <!-- Zeile 4: gross, ein Bild über die ganze Breite (6) -->
+    <div class="row h-l">
+      <figure class="c6"><img src="images/jahresausstellung-plakat-breit-2.png" alt="Jahresausstellung Plakat im breiten Format"></figure>
+    </div>
+
+  </section>
+
+  <!-- Weiteres Projekt: Block oben kopieren, data-project ändern, Bilder und Klassen anpassen -->
+  <!-- <section class="project-grid" data-project="0" aria-hidden="true"> ... </section> -->
+
+  <!-- paper.js erzeugt die weichen Übergänge (Meta Balls) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/paper.js/0.12.17/paper-core.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
