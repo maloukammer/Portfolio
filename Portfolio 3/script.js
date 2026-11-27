@@ -1,5 +1,5 @@
 /* ---------- Einstellungen ---------- */
-const BILD = "images/hintergrund.jpg";   // Hintergrundbild mit einem Streifen pro Projekt                 // dein Hintergrundbild mit den 8 Streifen
+const BILD = "images/Hintergrundbild4.jpg";   // Hintergrundbild mit einem Streifen pro Projekt
 // obere Kante jedes Streifens im Bild (in Pixeln), zuletzt die untere Kante des letzten
 const STREIFEN = [0, 165, 334, 502, 670, 838, 1007, 1174, 1344, 1510, 1677];
 const LAYOUT = "frei";                 // "frei" | "treppe" (links) | "rechts"
@@ -29,6 +29,30 @@ const PROJEKTBESCHREIBUNGEN = [
   "Ausgangspunkt dieses Projekts war ein Etikettenausdruckgerät, das ich zunächst in Illustrator nachgebaut habe und anschliessend dekonstruiert habe. Dabei entstanden spannende Muster und Formen, die als Grundlage für ein Plattencover zum Lied «Eisbär» von Grauzone dienten. In einem weiteren Schritt entwickelte ich eine eigene Schrift, die vom gestalteten Cover inspiriert ist. Der mehrteilige Prozess verband analoges Experimentieren mit digitaler Gestaltung und ermöglichte mir, meine Kenntnisse in Programmen wie Illustrator und Glyphs zu vertiefen.",
   "Eine erfundene Restaurantkette für Menschen mit Unverträglichkeiten bildet die Grundlage dieses Corporate-Design-Projekts. Das Fast-Food-Restaurant ermöglicht es, Burger individuell zusammenzustellen und Zutaten nach den eigenen Bedürfnissen auszuwählen. Das Konzept macht das Bestellen unkompliziert und bietet auch für wählerische Esser*innen eine grosse Auswahl. Das Logo greift die Idee der individuellen Zusammenstellung auf und zeigt, wie vielfältig die Möglichkeiten sind. Ergänzt wird es durch ein einheitliches Erscheinungsbild, das sich durch das gesamte Branding zieht."
 ];
+const PROJEKTNAMEN_EN = [
+  "24 Hours",
+  "Annual Exhibition Poster",
+  "Designers and Lamps",
+  "Just Around The Corner",
+  "Fundamentals of Design",
+  "Master's Graduation Concerts Poster",
+  "Word in Motion",
+  "Avec Ou Sans Bulles",
+  "Object, Record, Typeface",
+  "Sensi Burger"
+];
+const PROJEKTBESCHREIBUNGEN_EN = [
+  "A film that takes place over 24 hours and consists of 14 short stories forms the basis of this screenplay. The individual scenes are told through a combination of images and text and brought together in a clearly structured book. The vertically arranged photographs recall analogue film strips and give the design a cinematic character. The concept is complemented by a monospaced typeface that draws on the classic aesthetic of screenplays and rounds off the overall look.",
+  "In collaboration with Sinah Aregger, I designed the poster for the 2026 annual exhibition of Fachklasse Grafik. It was based on two illustrated postcard motifs that we had screen-printed in an earlier project. The result was a double-sided poster with one of the two motifs on each side, making the information visible twice. Some of the posters were also folded into flyers. This project allowed me to further develop my teamwork skills and, for the first time, follow the entire design process through to the final print run.",
+  "Three different lamps and their designers form the basis of this catalogue project. The aim was to stage the design objects in an engaging way through a playful placement of typography and to convey their individual mood to the reader. Vertically set typography plays a major role and runs throughout the entire layout. A shortened endpaper offers a first glimpse of the design concept and recalls the moment a lamp is switched on.",
+  "Twenty corner shops in London and their very own stories form the basis of this book project. During a study trip to London, every aspiring graphic designer in the Fachklasse Grafik explored, photographed and documented one shop. My book grew out of these different observations and collected materials. The design guides the reader through the various shops, presenting them side by side on individual pages. Photographs, personal impressions and texts offer insights into their everyday lives and show what connects these small businesses and what sets them apart.",
+  "In this foundation project, I explored the effects of shapes and type. In the first part, I developed various sequences of squares to graphically represent simple processes and movements. In the second part, I focused on semantic typography, where the meaning of a word is conveyed solely through its typographic design. The project helped me develop a better understanding of graphic design and apply the insights I gained in later projects.",
+  "As part of a competition held by the Lucerne University of Applied Sciences and Arts – Music, I designed a poster for the Master's graduation concerts. The aim was to capture the atmosphere of the concerts and attract attention with a striking design. Alongside the poster, I developed a matching animation. In the design process, I first experimented with various analogue techniques and then transferred them into the digital realm. This allowed me to try out different approaches and discover how movement and design can be combined effectively.",
+  "This experimental animation project was created to learn how to use the programs After Effects and Cavalry. The starting point was the word \"herunterfallen\" (\"to fall down\"), which was animated and interpreted in different ways. This resulted in a series of short animations in which either the lettering itself becomes the falling movement or shapes depict the action. The project combines playful experimentation with typographic design and shows how versatile a single word can become in motion.",
+  "During my two-week stay in Paris, I observed, sketched and photographed people in the National Library. I recorded my impressions and thoughts on the learning environment in a sketchbook. This material became the basis for a book that explores different learning resources and compares analogue and digital forms of learning. It combines texts, sketches and collages into a varied design. Small, overlapping texts and a recurring circle element define its visual identity and invite readers to explore the book more closely.",
+  "The starting point of this project was a label maker, which I first recreated in Illustrator and then deconstructed. This produced exciting patterns and shapes that served as the basis for a record cover for the song \"Eisbär\" by Grauzone. In a further step, I developed my own typeface inspired by the finished cover. This multi-stage process combined analogue experimentation with digital design and allowed me to deepen my skills in programs such as Illustrator and Glyphs.",
+  "A fictional restaurant chain for people with food intolerances forms the basis of this corporate design project. The fast-food restaurant lets guests put together their own burgers and choose ingredients according to their individual needs. The concept makes ordering easy and offers a wide selection, even for picky eaters. The logo picks up on the idea of individual combinations and shows how diverse the possibilities are. It is complemented by a consistent visual identity that runs throughout the entire branding."
+];
 const ANZAHL = PROJEKTNAMEN.length;    // Anzahl Zeilen = Anzahl Projekte (wird automatisch gezählt)
 const HANDY_BREITE = 700;              // unter dieser Fensterbreite gilt das Handy-Layout
 
@@ -38,7 +62,15 @@ paper.setup(canvas);
 const { Point, Path, CompoundPath, Group, Raster, Size } = paper;
 const R = (a, b) => a + Math.random() * (b - a);
 const shuffle = a => a.map(x => [Math.random(), x]).sort((p, q) => p[0] - q[0]).map(p => p[1]);
+const navigationType = performance.getEntriesByType("navigation")[0]?.type;
+const referrerIsSameSite = document.referrer
+  ? new URL(document.referrer).origin === location.origin
+  : false;
+if (navigationType === "reload" || !referrerIsSameSite) {
+  sessionStorage.setItem("portfolio-language", "de");
+}
 let W, H, G, VG, rows = [], img, selectedProject = -1;
+let currentLanguage = sessionStorage.getItem("portfolio-language") === "en" ? "en" : "de";
 let mobil = false, kreisMin = 3, kreisMax = 8;   // werden in build() je nach Fensterbreite gesetzt
 let letzterZeiger = "mouse";                      // "touch" = Finger, "mouse" = Maus
 let pendingHandyProject = -1;
@@ -57,8 +89,12 @@ function setGridHidden(hidden) {
   });
 }
 const descriptionToggle = document.querySelector(".project-info-toggle");
+const projectInfo = document.querySelector(".project-info");
 const projectDescription = document.querySelector(".project-description");
 const descriptionText = projectDescription.querySelector("p");
+const languageToggle = document.querySelector("#language-toggle");
+const projectsLink = document.querySelector("#projects-link");
+const aboutLink = document.querySelector(".topbar-link");
 const rowShades = Array.from({ length: ANZAHL }, () => {
   const shade = document.createElement("div");
   shade.className = "row-shade";
@@ -67,10 +103,58 @@ const rowShades = Array.from({ length: ANZAHL }, () => {
 });
 let activeRow = -1;
 
+function getProjectNames() {
+  return currentLanguage === "en" ? PROJEKTNAMEN_EN : PROJEKTNAMEN;
+}
+
+function getProjectDescriptions() {
+  return currentLanguage === "en" ? PROJEKTBESCHREIBUNGEN_EN : PROJEKTBESCHREIBUNGEN;
+}
+
+function updateLanguage() {
+  const isEnglish = currentLanguage === "en";
+  const names = getProjectNames();
+  document.documentElement.lang = currentLanguage;
+  projectsLink.textContent = isEnglish ? "Projects" : "Projekte";
+  aboutLink.textContent = isEnglish ? "About Me" : "Über mich";
+  languageToggle.setAttribute("aria-label", isEnglish ? "Switch language to German" : "Sprache zu Englisch wechseln");
+  languageToggle.setAttribute("aria-pressed", String(isEnglish));
+  projectInfo.setAttribute("aria-label", isEnglish ? "Project information" : "Projektinformation");
+  projectDescription.setAttribute("aria-label", isEnglish ? "Project description" : "Projektbeschreibung");
+  descriptionToggle.setAttribute(
+    "aria-label",
+    descriptionToggle.getAttribute("aria-expanded") === "true"
+      ? isEnglish ? "Close project description" : "Projektbeschreibung schließen"
+      : isEnglish ? "Show project description" : "Projektbeschreibung anzeigen"
+  );
+  projectGrids.forEach((grid, index) => {
+    grid.setAttribute("aria-label", `${isEnglish ? "Project content" : "Projektinhalt"} ${names[index]}`);
+  });
+
+  const titleIndex = activeRow >= 0 ? activeRow : selectedProject;
+  titleLabel.textContent = titleIndex >= 0 ? names[titleIndex] : "";
+  descriptionText.textContent = selectedProject >= 0
+    ? getProjectDescriptions()[selectedProject]
+    : isEnglish ? "Choose a project to read its description." : "Wähle ein Projekt aus, um seine Beschreibung zu lesen.";
+}
+
+languageToggle.addEventListener("click", () => {
+  currentLanguage = currentLanguage === "de" ? "en" : "de";
+  sessionStorage.setItem("portfolio-language", currentLanguage);
+  updateLanguage();
+});
+
+updateLanguage();
+
 function setDescriptionOpen(isOpen) {
   document.body.classList.toggle("project-description-open", isOpen);
   descriptionToggle.setAttribute("aria-expanded", String(isOpen));
-  descriptionToggle.setAttribute("aria-label", isOpen ? "Projektbeschreibung schließen" : "Projektbeschreibung anzeigen");
+  descriptionToggle.setAttribute(
+    "aria-label",
+    isOpen
+      ? currentLanguage === "en" ? "Close project description" : "Projektbeschreibung schließen"
+      : currentLanguage === "en" ? "Show project description" : "Projektbeschreibung anzeigen"
+  );
   projectDescription.setAttribute("aria-hidden", String(!isOpen));
 }
 
@@ -91,7 +175,8 @@ document.addEventListener("pointerdown", event => {
 function setActiveRow(index) {
   activeRow = index;
   rowShades.forEach((shade, i) => shade.classList.toggle("is-dimmed", index >= 0 && i !== index));
-  titleLabel.textContent = index >= 0 ? PROJEKTNAMEN[index] : selectedProject >= 0 ? PROJEKTNAMEN[selectedProject] : "";
+  const names = getProjectNames();
+  titleLabel.textContent = index >= 0 ? names[index] : selectedProject >= 0 ? names[selectedProject] : "";
   titleLabel.classList.toggle("is-visible", index >= 0 && selectedProject < 0);
   titleLabel.classList.toggle("is-selected", selectedProject >= 0);
 }
@@ -107,7 +192,7 @@ function openProject(index) {
   overviewIntro.active = false;
   pendingHandyProject = -1;
   selectedProject = index;
-  descriptionText.textContent = PROJEKTBESCHREIBUNGEN[index];
+  descriptionText.textContent = getProjectDescriptions()[index];
   setDescriptionOpen(false);
   document.body.classList.add("project-open");
   document.body.classList.remove("project-grid-visible");
@@ -261,7 +346,9 @@ function neueZeile(index) {
 
   // Bildstreifen dieser Zeile ausschneiden und als Raster hinter die Maske legen
   const dpr = window.devicePixelRatio || 1;
-  const top = STREIFEN[index] + 4, bottom = STREIFEN[index + 1] - 4;
+  const sourceScale = img.height / STREIFEN[STREIFEN.length - 1];
+  const top = (STREIFEN[index] + 4) * sourceScale;
+  const bottom = (STREIFEN[index + 1] - 4) * sourceScale;
   const oc = document.createElement("canvas");
   oc.width = W * dpr; oc.height = H * dpr;
   // "cover": das Bild füllt die Zeile immer ganz, der Überschuss wird rundum gleichmässig abgeschnitten

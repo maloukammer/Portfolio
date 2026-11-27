@@ -2,7 +2,7 @@
 <html lang="de">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Malou Kammer</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -13,9 +13,14 @@
 <body>
   <header class="topbar">
     <button id="projects-link" type="button">Projekte</button>
-    <div class="project-title" aria-live="polite"></div>
     <a class="topbar-link" href="about.html">Über mich</a>
+    <div class="project-title" aria-live="polite"></div>
   </header>
+
+  <footer class="bottombar">
+    <button id="language-toggle" type="button" aria-label="Sprache zu Englisch wechseln">DE/EN</button>
+    <span class="footer-name">Malou Kammer</span>
+  </footer>
 
   <main>
     <canvas id="c"></canvas>

@@ -9,18 +9,28 @@
   <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@200&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="about-body">
   <header class="topbar">
     <a class="topbar-link" href="balken-komplett.html">Projekte</a>
-    <span class="project-title is-visible">Malou Kammer</span>
+    <span class="about-page-label" aria-current="page">Über mich</span>
   </header>
+  <footer class="bottombar">
+    <button id="language-toggle" type="button" aria-label="Sprache zu Englisch wechseln">DE/EN</button>
+    <span class="footer-name">Malou Kammer</span>
+  </footer>
   <main class="about-page" aria-label="About Me">
-    <section class="about-grid" aria-label="Portrait">
+    <section class="about-grid" aria-label="Über Malou Kammer">
       <div class="about-portrait">
         <img class="about-portrait-image about-portrait-base" src="images/Portrait_1.jpg" alt="Portrait von Malou Kammer">
         <img class="about-portrait-image about-portrait-hover" src="images/Portrait_2.jpg" alt="" aria-hidden="true">
       </div>
+      <div class="about-description">
+        <p>Hallo, ich bin Malou Kammer – 18 Jahre alt und im fünften Semester meiner Ausbildung an der Fachklasse Grafik Luzern.</p>
+        <p>Besonders begeistern mich Branding und Corporate Design, aber auch Motion Graphics und Webdesign. Ich probiere gerne Neues aus und entwickle eine Idee in einem intensiven Entwurfsprozess Schritt für Schritt weiter, bis daraus ein stimmiges Endprodukt entsteht. Dabei lerne ich ständig dazu und baue meine Fähigkeiten laufend aus.</p>
+        <p>Mein Ziel ist es, meinen eigenen Gestaltungsstil weiterzuentwickeln: experimentell, aber mit klarer Ordnung. Ich möchte Gestaltung schaffen, die sichtbar wird und im Alltag der Menschen etwas bewirkt.</p>
+      </div>
     </section>
   </main>
+  <script src="about.js"></script>
 </body>
 </html>
